@@ -1,5 +1,4 @@
-# WebsiteBanCaPhe
-# Website Bán Cà Phê
+# Website Bán Sách
 
 Đây là project đồ án môn Xây dựng hệ thống thông tin trên các framework, sử dụng ASP.NET MVC 6.0. Đề tài Website bán các loại cà phê đóng gói.
 
@@ -71,7 +70,7 @@
 
 1. Clone repository này về máy của bạn.
 
-  `git clone https://github.com/nvcong1710/WebsiteBanCaPhe.git`
+  `git remote add origin https://github.com/Ngansan/Book_Website.git`
 
 2. Mở project bằng Visual Studio/Visual Studio Code
 3. Chạy file database với SSMS
@@ -84,5 +83,6 @@
 - SQL Server
 - Google Chart
 - APPlus
+- Coze AI
 
 
