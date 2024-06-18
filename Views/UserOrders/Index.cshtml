@@ -1,0 +1,69 @@
+﻿@model IEnumerable<WebsiteBanSach.Models.UserOrder>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Đơn hàng của bạn</h2>
+<table class="table responstable">
+    <thead>
+        <tr>
+            <th>
+                Ngày đặt 
+            </th>
+            <th>
+                Người nhận
+            </th>
+            <th>
+                Tổng tiền
+            </th>
+            <th>
+                Trạng thái đơn hàng
+            </th>
+            <th>
+                Trạng thái thanh toán
+            </th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceiverName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalValue)
+                </td>
+                <td>
+                    @if (item.IsDone == false)
+                    {
+                        @:Chưa nhận hàng
+                    }
+                    else
+                    {
+                        @:Đã nhận hàng
+                    }
+                </td>
+                <td>
+                    @if (item.IsPaid == false)
+                    {
+                        @:Chưa thanh toán
+                    }
+                    else
+                    {
+                        @:Đã thanh toán
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.OrderId" class="btn btn-default" style="background-color: #4bb6b7; border: 1px solid #4bb6b7; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); color: #fff;">Cập nhật</a>
+                    <a asp-action="Details" asp-route-id="@item.OrderId" class="btn btn-default" style="background-color: #4bb6b7; border: 1px solid #4bb6b7; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); color: #fff;">Chi tiết</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

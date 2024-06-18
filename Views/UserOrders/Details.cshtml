@@ -1,0 +1,178 @@
+﻿@model WebsiteBanSach.Models.UserOrder
+
+@{
+    ViewData["Title"] = "Details";
+    var OrderDetailList = ViewData["OrderDetailList"] as List<OrderDetail>;
+}
+
+<h2>Chi tiết đơn hàng</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <hr />
+        <dl class="dl-horizontal">
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Ngày đặt
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderDate)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;"> 
+                Người nhận
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ReceiverName)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Số điện thoại
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Địa chỉ
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Phương thức thanh toán
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PaymentMethod)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Ghi chú
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Note)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Phí ship
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ShippingFee)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Tổng giá trị
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.TotalValue)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Xác nhận
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.IsDone)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Tài khoản
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Account.FullName)
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Trạng thái thanh toán
+            </dt>
+            <dd>
+                @if (Model.IsPaid == false)
+                {
+                    @:Chưa thanh toán
+                }
+                else
+                {
+                    @:Đã thanh toán
+                }
+            </dd>
+            <dt style="font-weight: bold; margin-bottom: 5px; color: #333; text-align: left;">
+                Trạng thái nhận hàng
+            </dt>
+            <dd>
+                @if (Model.IsDone == false)
+                {
+                    @:Chưa nhận hàng
+                }
+                else
+                {
+                    @:Đã nhận hàng
+                }
+            </dd>
+
+        </dl>
+
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.OrderId" class="btn btn-default" style="background-color: #4bb6b7; border: 1px solid #4bb6b7; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); color: #fff;" >Edit</a>
+            <a asp-action="Index" class="btn btn-default" style="background-color: #4bb6b7; border: 1px solid #4bb6b7; border-radius: 5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); color: #fff;" >Back to List</a>
+        </div>
+    </div>
+    <!-- Order Details -->
+    <div class="col-md-6 order-details">
+        <div class="section-title text-center">
+            <h3 class="title">Your Order</h3>
+        </div>
+        <div class="order-summary">
+            <table class="table responstable">
+                <thead>
+                    <tr>
+                        <th>
+                            Hình ảnh
+                        </th>
+                        <th>
+                            Tên sản phẩm
+                        </th>
+                        <th>
+                            Số lượng
+                        </th>
+                        <th>
+                            Giá trị
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (OrderDetailList is null)
+                    {
+                        <h2>Error</h2>
+                    }
+                    else
+                    {
+                        @foreach (var item in OrderDetailList)
+                        {
+                            <tr>
+                                <td style="width:100px">
+                                    <img style="width:100%" src="@item.Product.PhotoURL" alt="" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Product.ProductName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+            <div class="order-col">
+                <div>Shiping</div>
+                <div><strong>FREE</strong></div>
+            </div>
+            <div class="order-col">
+                <div><strong>TOTAL</strong></div>
+                <div>
+                    <strong class="order-total">
+                        <script>
+                            document.write(formatNumber(@Model.TotalValue));
+                        </script>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Order Details -->
+</div>
+
+

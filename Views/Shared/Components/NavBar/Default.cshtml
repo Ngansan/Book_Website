@@ -1,0 +1,30 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<WebsiteBanSach.Models.Category>
+
+<nav id="navigation">
+	<!-- container -->
+	<div class="container">
+		<!-- responsive-nav -->
+		<div id="responsive-nav">
+			<!-- NAV -->
+			<ul class="main-nav nav navbar-nav">
+
+				<li><a href="/Home/Index">Home</a></li>
+				<li><a href="/IntroducePage/Index">Giới thiệu</a></li>
+				<li><a href="/Products/Index">Sản phẩm</a></li>
+				@foreach (var item in Model)
+				{
+					<li><a href="/ProductByCategory/Index/@item.CategoryId">@item.CategoryName</a></li>
+				}		
+			</ul>
+			<!-- /NAV -->
+		</div>
+		<!-- /responsive-nav -->
+	</div>
+	<!-- /container -->
+</nav>

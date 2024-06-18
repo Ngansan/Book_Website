@@ -1,0 +1,273 @@
+@model IEnumerable<WebsiteBanSach.Models.OrderDetail>
+
+@{
+    ViewData["Title"] = "Index";
+    int thisMonth = @DateTime.Now.Month - 1;
+    int lastMonth = @DateTime.Now.Month - 2;
+    long RevenueNovel = (long)ViewData["RevenueNovel"];
+    long RevenueManga = (long)ViewData["RevenueManga"];
+    long RevenueVN = (long)ViewData["RevenueVN"];
+    long RevenueNN = (long)ViewData["RevenueNN"];
+
+    double NovelRate = (double)ViewData["NovelRate"];
+    double MangaRate = (double)ViewData["MangaRate"];
+    double VNRate = (double)ViewData["VNRate"];
+    double NNRate = (double)ViewData["NNRate"];
+
+    long[] RevenueByMonth = ViewData["RevenueByMonth"] as long[];
+    long[] RevenueByMonthNovel = ViewData["RevenueByMonthNovel"] as long[];
+    long[] RevenueByMonthManga = ViewData["RevenueByMonthManga"] as long[];
+    long[] RevenueByMonthVN = ViewData["RevenueByMonthVN"] as long[];
+    long[] RevenueByMonthNN = ViewData["RevenueByMonthNN"] as long[];
+
+    double monthRate = 100f;
+    double novelMonthRate = 100f;
+    double mangaMonthRate = 100f;
+    double vnMonthRate = 100f;
+    double nnMonthRate = 100f;
+    var yearRate = ((float)@RevenueByMonth.Sum() / 126000000 - 1.0) * 100.0;
+
+    if (thisMonth != 0)
+    {
+        if (@RevenueByMonth[lastMonth] != 0)
+        {
+            monthRate = (((float)@RevenueByMonth[thisMonth] / @RevenueByMonth[lastMonth]) - 1.0) * 100.0;
+        }
+
+        if (@RevenueByMonthNovel[lastMonth] != 0)
+        {
+            novelMonthRate = (((float)@RevenueByMonthNovel[thisMonth] / @RevenueByMonthNovel[lastMonth]) - 1.0) * 100.0;
+        }
+
+
+        if (@RevenueByMonthManga[lastMonth] != 0)
+        {
+            mangaMonthRate = (((float)@RevenueByMonthManga[thisMonth] / @RevenueByMonthManga[lastMonth]) - 1.0) * 100.0;
+        }
+
+
+        if (@RevenueByMonthVN[lastMonth] != 0)
+        {
+            vnMonthRate = (((float)@RevenueByMonthVN[thisMonth] / @RevenueByMonthVN[lastMonth]) - 1.0) * 100.0;
+        }
+
+        if (@RevenueByMonthNN[lastMonth] != 0)
+        {
+            nnMonthRate = (((float)@RevenueByMonthNN[thisMonth] / @RevenueByMonthNN[lastMonth]) - 1.0) * 100.0;
+        }
+    }
+
+
+    Layout = "_LayoutAdmin";
+}
+
+@{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Product', 'Revenue'],
+                    ['Tiểu thuyết', @RevenueNovel],
+                    ['Truyện tranh', @RevenueManga],
+                    ['VHVN', @RevenueVN],
+                    ['VHNN', @RevenueNN]
+                ]);
+
+                var options = {
+                    title: 'Doanh thu theo danh mục'
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                chart.draw(data, options);
+            }
+    </script>
+
+    <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Month', ''],
+        @for (int i = 0; i < RevenueByMonth.Length; i++)
+        {
+            <text>['Th@(i + 1)', @RevenueByMonth[i]],</text>
+        }
+                ]);
+
+                var options = {
+                    title: 'Biểu đồ doanh thu năm @DateTime.Now.Year',
+                    hAxis: {title: 'Tháng',  titleTextStyle: {color: '#333'}},
+                    vAxis: {minValue: 0}
+                };
+
+                var chart = new google.visualization.ColumnChart(document.getElementById('columnchart'));
+
+                chart.draw(data, options);
+            }
+    </script>
+
+    <script type="text/javascript">
+            google.charts.load('current', { 'packages': ['corechart'] });
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Tháng', 'Tiểu thuyết', 'Truyện tranh', 'Văn học Việt Nam', 'Văn học nước ngoài'],
+                    ['1', @RevenueByMonthNovel[0], @RevenueByMonthManga[0], @RevenueByMonthVN[0], @RevenueByMonthNN[0]],
+                    ['2', @RevenueByMonthNovel[1], @RevenueByMonthManga[1], @RevenueByMonthVN[1], @RevenueByMonthNN[1]],
+                    ['3', @RevenueByMonthNovel[2], @RevenueByMonthManga[2], @RevenueByMonthVN[2], @RevenueByMonthNN[2]],
+                    ['4', @RevenueByMonthNovel[3], @RevenueByMonthManga[3], @RevenueByMonthVN[3], @RevenueByMonthNN[3]],
+                    ['5', @RevenueByMonthNovel[4], @RevenueByMonthManga[4], @RevenueByMonthVN[4], @RevenueByMonthNN[4]],
+                    ['6', @RevenueByMonthNovel[5], @RevenueByMonthManga[5], @RevenueByMonthVN[5], @RevenueByMonthNN[5]],
+                    ['7', @RevenueByMonthNovel[6], @RevenueByMonthManga[6], @RevenueByMonthVN[6], @RevenueByMonthNN[6]],
+                    ['8', @RevenueByMonthNovel[7], @RevenueByMonthManga[7], @RevenueByMonthVN[7], @RevenueByMonthNN[7]],
+                    ['9', @RevenueByMonthNovel[8], @RevenueByMonthManga[8], @RevenueByMonthVN[8], @RevenueByMonthNN[8]],
+                    ['10', @RevenueByMonthNovel[9],@RevenueByMonthManga[9], @RevenueByMonthVN[9], @RevenueByMonthNN[9]],
+                    ['11', @RevenueByMonthNovel[10], @RevenueByMonthManga[10], @RevenueByMonthVN[10], @RevenueByMonthNN[10]],
+                    ['12', @RevenueByMonthNovel[11], @RevenueByMonthManga[11], @RevenueByMonthVN[11], @RevenueByMonthNN[11]]
+                ]);
+
+                var options = {
+                    title: 'Biểu đồ doanh thu theo danh mục',
+                    curveType: 'function',
+                    legend: { position: 'bottom' }
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                chart.draw(data, options);
+            }
+    </script>
+}
+
+
+<div class="card-container">
+    <div class="card">
+        <h1>Doanh thu tháng @DateTime.Now.Month</h1>
+        <h2 id="revenueByMonth"></h2>
+        <p id="monthRate"></pid>
+    </div>
+    <div class="card">
+        <h1>Doanh thu năm @DateTime.Now.Year</h1>
+        <h2 id="revenueByYear"></h2>
+        <p id="yearRate"></p>
+    </div>
+    <div class="card">
+        <h1>Tiểu thuyết</h1>
+        <h2 id="revenueNovel"></h2>
+        <p id="novelRate"></p>
+    </div>
+    <div class="card">
+        <h1>Truyện tranh</h1>
+        <h2 id="revenueManga"></h2>
+        <p id="mangaRate"></p>
+    </div>
+    <div class="card">
+        <h1>Văn học Việt Nam</h1>
+        <h2 id="revenueVN"></h2>
+        <p id="vnRate"></p>
+    </div>
+    <div class="card">
+        <h1>Văn học nước ngoài</h1>
+        <h2 id="revenueNN"></h2>
+        <p id="nnRate"></p>
+    </div>
+</div>
+
+<style>
+    .card-container {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        background: #E0F7FA;
+        border-radius: 5px;
+        padding: 20px;
+        width: 200px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+        .card h1 {
+            color: #cd00e8;
+            font-size: 20px;
+            font-weight:bolder;
+        }
+
+        .card h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .card p {
+            color: green;
+            font-size: 16px;
+        }
+</style>
+
+<script>
+    // Variables for revenue data
+    var revenueByMonth = @RevenueByMonth[DateTime.Now.Month - 1];
+    var revenueByYear = @RevenueByMonth.Sum();
+    var revenueNovel = @RevenueByMonthNovel[DateTime.Now.Month-1];
+    var revenueManga = @RevenueByMonthManga[DateTime.Now.Month-1];
+    var revenueVN = @RevenueByMonthVN[DateTime.Now.Month-1];
+    var revenueNN = @RevenueByMonthNN[DateTime.Now.Month-1];
+    var novelRate = @novelMonthRate;
+    var mangaRate = @mangaMonthRate;
+    var vnRate = @vnMonthRate;
+    var nnRate = @nnMonthRate;
+    var monthRate = @monthRate;
+    var yearRate = @yearRate;
+
+    // Display the data
+    document.getElementById('revenueNovel').textContent = formatNumber(revenueNovel);
+    document.getElementById('revenueManga').textContent = formatNumber(revenueManga);
+    document.getElementById('revenueVN').textContent = formatNumber(revenueVN);
+    document.getElementById('revenueNN').textContent = formatNumber(revenueNN);
+    document.getElementById('revenueByMonth').textContent = formatNumber(revenueByMonth);
+    document.getElementById('revenueByYear').textContent = formatNumber(revenueByYear);
+
+
+    var rateElements = [
+        { element: 'novelRate', rate: novelRate },
+        { element: 'mangaRate', rate: mangaRate },
+        { element: 'vnRate', rate: vnRate },
+        { element: 'nnRate', rate: nnRate },
+        { element: 'monthRate', rate: monthRate }
+    ];
+    for (var i = 0; i < rateElements.length; i++) {
+        var rateElement = document.getElementById(rateElements[i].element);
+        if (rateElements[i].rate < 0) {
+            rateElement.style.color = 'red';
+            rateElement.textContent = "↓" + Math.abs(rateElements[i].rate).toFixed(2) + "% so với tháng trước";
+        } else {
+            rateElement.style.color = 'green';
+            rateElement.textContent = "↑" + rateElements[i].rate.toFixed(2) + "% so với tháng trước";
+        }
+    }
+    var rateElement = document.getElementById('yearRate');
+    if (yearRate < 0) {
+        rateElement.style.color = 'red';
+        rateElement.textContent = "↓" + Math.abs(yearRate).toFixed(2) + "% so với năm trước";
+    } else {
+        rateElement.style.color = 'green';
+        rateElement.textContent = "↑" + yearRate.toFixed(2) + "% so với năm trước";
+    }
+</script>
+
+
+
+<div class="row">
+    <div id="curve_chart" class="col-md-7" style="height: 500px"></div>
+    <div class="col-md-5" id="piechart" style="height: 500px;"></div>
+</div>
+<div style="height:30px"></div>
+<div id="columnchart" style="height: 500px;"></div>

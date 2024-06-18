@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WebsiteBanSach.Models.CartDetail>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p style="margin-bottom: 15px;">
+    <a asp-action="Create" class="btn btn-primary">Tạo mới</a>
+</p>
+
+<table class="table responstable">
+    <thead>
+        <tr>
+            <th>
+                Sản phẩm
+            </th>
+            <th>
+                Số lượng
+            </th>
+            <th>
+                Tổng giá tiền
+            </th>
+            <th> 
+                Hành động
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CartDetailId" class="btn btn-primary btn-sm" style="margin-right: 5px;">Sửa</a>
+                <a asp-action="Details" asp-route-id="@item.CartDetailId" class="btn btn-info btn-sm" style="margin-right: 5px;">Chi tiết</a>
+                <a asp-action="Delete" asp-route-id="@item.CartDetailId" class="btn btn-danger btn-sm" style="margin-right: 5px;">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<button style="border: 0px;">
+    <a href="/UserOrders/Create" class="btn btn-primary"> Đặt hàng </a>
+</button>

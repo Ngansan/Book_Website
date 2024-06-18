@@ -1,0 +1,40 @@
+﻿@model WebsiteBanSach.Models.OrderDetail
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4>OrderDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Người đặt hàng
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserOrder.Address)
+        </dd>
+        <dt>
+            Sản phẩm
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Product.Branch)
+        </dd>
+        <dt>
+            Số lượng
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt>
+            Tổng giá tiền
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.OrderDetailId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
